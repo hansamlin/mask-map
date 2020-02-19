@@ -38,6 +38,14 @@ module.exports = {
       options: {
         linkStyles: true // (default: true) Enable/disable loading stylesheets via CDN
       }
+    },
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /\.svg$/ // See below to configure properly
+        }
+      }
     }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
