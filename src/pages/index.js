@@ -1,11 +1,14 @@
 import React from "react";
-import Map from "../components/map";
+
 import Seo from "../components/seo";
+import Map from "../components/map";
+import Sidebar from "../components/sidebar";
 
 const IndexPage = () => {
   return (
     <>
       <Seo title="Mask map" />
+      <Sidebar />
       <Map />
     </>
   );
