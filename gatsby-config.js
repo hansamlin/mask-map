@@ -43,8 +43,20 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /\.svg$/ // See below to configure properly
+          include: /images/ // See below to configure properly
         }
+      }
+    },
+    {
+      resolve: "gatsby-source-graphql",
+      options: {
+        // Arbitrary name for the remote schema Query type
+        typeName: "maskdata",
+        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
+        fieldName: "maskdata",
+        // Url to query from
+        url: "https://mask-data-farmer.herokuapp.com/graphql",
+        refetchInterval: 60
       }
     }
     // this (optional) plugin enables Progressive Web App + Offline functionality
