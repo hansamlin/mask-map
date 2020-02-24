@@ -52,7 +52,12 @@ function SEO({ description, lang, meta, title }) {
           content: `website`
         }
       ].concat(meta)}
-    />
+    >
+      <link
+        href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+        rel="stylesheet"
+      ></link>
+    </Helmet>
   );
 }
 
