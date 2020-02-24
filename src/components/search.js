@@ -15,7 +15,16 @@ export default () => {
 
 const Container = styled.div`
   width: 100%;
-  height: 124px;
   padding: 16px 20px;
-  border: 1px solid #eaeaea;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #eaeaea;
+  }
 `;

@@ -1,13 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
+import Info from "./info";
 import Search from "./search";
+import List from "./list";
 
-export default () => (
-  <Container>
-    <Search />
-  </Container>
-);
+export default () => {
+  return (
+    <Container>
+      <Info />
+      <Search />
+      {/* <List /> */}
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 315px;
@@ -17,4 +23,7 @@ const Container = styled.div`
   box-shadow: 5px 0px 15px -8px rgba(0, 0, 0, 0.77);
   z-index: 1;
   background: #ffffff 0% 0% no-repeat padding-box;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 136px 124px auto;
 `;
