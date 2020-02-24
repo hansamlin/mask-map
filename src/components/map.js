@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Map, Marker, ZoomControl, WMSTileLayer, Popup } from "react-leaflet";
-import L from "leaflet";
+import React, { useState, useContext } from "react";
+import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
+import { useStaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+
+import Marker from "./marker";
+import { MaskProvider } from "../store/maskProvider";
 
 const init = {
   lat: 25.081764,
@@ -10,29 +13,33 @@ const init = {
 };
 
 export default () => {
-  const [position, setPosition] = useState(init);
+  // const [position, setPosition] = useState(init);
+  let publicURL;
+  const { data } = useContext(MaskProvider);
 
-  const handleClick = e => setPosition(e.latlng);
-
-  const icon = L.icon({
-    iconUrl:
-      "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });
+  const {
+    allFile: { nodes: source }
+  } = useStaticQuery(graphql`
+    {
+      allFile(
+        filter: { extension: { eq: "png" }, name: { regex: "/marker.+/" } }
+      ) {
+        nodes {
+          name
+          publicURL
+        }
+      }
+    }
+  `);
+  console.log(source);
 
   return (
     <Container
       zoom={16}
       zoomControl={false}
-      maxZoom={17}
-      minZoom={13}
-      center={position}
-      onclick={handleClick}
+      maxZoom={18}
+      minZoom={6}
+      center={init}
       className="markercluster-map"
     >
       <ZoomControl position="topright" />
@@ -42,11 +49,21 @@ export default () => {
       />
 
       <MarkerClusterGroup>
-        <Marker icon={icon} position={init}>
-          <Popup>test</Popup>
-        </Marker>
-        <Marker icon={icon} position={[25.079394, 121.548388]} />
-        <Marker icon={icon} position={[25.080181, 121.545427]} />
+        {data.map(item => {
+          if (item.adult_count + item.child_count >= 100) {
+            publicURL = source[2].publicURL;
+          } else {
+            publicURL = source[1].publicURL;
+          }
+
+          if (item.adult_count + item.child_count === 0) {
+            publicURL = source[0].publicURL;
+          }
+
+          return (
+            <Marker item={item} iconPublicURL={publicURL} key={item.code} />
+          );
+        })}
       </MarkerClusterGroup>
     </Container>
   );
