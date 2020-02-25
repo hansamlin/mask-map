@@ -5,7 +5,6 @@ import Quantity from "./quantity";
 
 const getBuinessHours = (day, business_hours) => {
   let key, morning, afternoon, night;
-  console.log(business_hours);
   if (business_hours.length !== 21) {
     return "未公布";
   }
@@ -18,8 +17,6 @@ const getBuinessHours = (day, business_hours) => {
   morning = key;
   afternoon = key + 7;
   night = key + 14;
-
-  console.log(business_hours[morning]);
 
   return [
     business_hours[morning].slice(-4),
@@ -41,7 +38,7 @@ export default props => {
   const day = now.getDay();
 
   const business = getBuinessHours(day, business_hours);
-  console.log(business);
+
   return (
     <Container>
       <Name>{name}</Name>

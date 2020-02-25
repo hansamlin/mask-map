@@ -1,43 +1,46 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
-import MarkerClusterGroup from "react-leaflet-markercluster";
-import Marker from "./marker";
 import { MaskProvider } from "../store/maskProvider";
-import { useStaticQuery, graphql } from "gatsby";
+import MarkerGroup from "./markerGroup";
 
 const init = {
   lat: 25.045655,
   lng: 121.536456
 };
 
+const getSixDigits = num => {
+  return Math.floor(num * 1000000) / 1000000;
+};
+
 export default () => {
   const [position, setPosition] = useState(init);
-  let icon;
-  let { data } = useContext(MaskProvider);
-  // data = data.slice(0, 5);
+  const { setStore, data } = useContext(MaskProvider);
 
-  const {
-    allFile: { nodes: source }
-  } = useStaticQuery(graphql`
-    {
-      allFile(filter: { name: { regex: "/marker/" } }) {
-        nodes {
-          name
-          publicURL
-        }
-      }
-    }
-  `);
+  const handleMoveEnd = e => {
+    const { _southWest, _northEast } = e.target.getBounds();
+    const visibleData = data.filter(item => {
+      const { location } = item;
 
-  const [shadow] = source.filter(item => item.name === "marker-shadow");
+      return (
+        location.lat > getSixDigits(_southWest.lat) &&
+        location.lon > getSixDigits(_southWest.lng) &&
+        location.lat < getSixDigits(_northEast.lat) &&
+        location.lon < getSixDigits(_northEast.lng)
+      );
+    });
+
+    setStore(visibleData);
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+
         setPosition({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lat: latitude,
+          lng: getSixDigits(longitude)
         });
       });
     }
@@ -50,6 +53,7 @@ export default () => {
       maxZoom={18}
       minZoom={6}
       center={position}
+      onmoveend={handleMoveEnd}
     >
       <ZoomControl position="topright" />
       <WMSTileLayer
@@ -57,28 +61,7 @@ export default () => {
         url="https://wmts.nlsc.gov.tw/wmts/EMAP/default/EPSG:3857/{z}/{y}/{x}"
       />
 
-      <MarkerClusterGroup>
-        {data.map(item => {
-          if (item.adult_count + item.child_count >= 100) {
-            [icon] = source.filter(item => item.name === "marker-icon-orange");
-          } else {
-            [icon] = source.filter(item => item.name === "marker-icon-red");
-          }
-
-          if (item.adult_count + item.child_count === 0) {
-            [icon] = source.filter(item => item.name === "marker-icon-green");
-          }
-
-          return (
-            <Marker
-              item={item}
-              iconPublicURL={icon.publicURL}
-              shadowPublicURL={shadow.publicURL}
-              key={item.code}
-            />
-          );
-        })}
-      </MarkerClusterGroup>
+      <MarkerGroup />
     </Container>
   );
 };

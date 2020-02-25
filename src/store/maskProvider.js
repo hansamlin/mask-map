@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 import { useStaticQuery, graphql } from "gatsby";
 
 export const MaskProvider = createContext();
@@ -34,8 +34,11 @@ export default ({ children }) => {
   const data = source.maskdata.getMasks.payload.filter(item => {
     return item.location;
   });
-  // console.log(source.maskdata.getMasks.payload.length, data.length);
+  const [store, setStore] = useState([]);
+
   return (
-    <MaskProvider.Provider value={{ data }}>{children}</MaskProvider.Provider>
+    <MaskProvider.Provider value={{ store, setStore, data }}>
+      {children}
+    </MaskProvider.Provider>
   );
 };

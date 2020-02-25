@@ -10,7 +10,7 @@ export default () => {
     <Container>
       <Info />
       <Search />
-      {/* <List /> */}
+      <List />
     </Container>
   );
 };

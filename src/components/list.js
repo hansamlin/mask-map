@@ -5,12 +5,11 @@ import { MaskProvider } from "../store/maskProvider";
 import Block from "./block";
 
 export default () => {
-  let { data } = useContext(MaskProvider);
-  // console.log(data);
-  // data = data.slice(0, 10);
+  let { store } = useContext(MaskProvider);
+
   return (
     <Container>
-      {data.map(item => (
+      {store.map(item => (
         <Block item={item} key={item.code} />
       ))}
     </Container>
