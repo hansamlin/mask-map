@@ -4,7 +4,6 @@ import styled from "styled-components";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import Marker from "./marker";
 import { MaskProvider } from "../store/maskProvider";
-import { green, orange, red } from "./icon";
 import { useStaticQuery, graphql } from "gatsby";
 
 const init = {
