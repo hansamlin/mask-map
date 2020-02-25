@@ -18,7 +18,6 @@ const getNow = () => {
   const month = add(now.getMonth() + 1);
   const day = add(now.getDate());
   const weekday = now.getDay();
-  console.log(now.getDay());
 
   return {
     date: `${year} - ${month} - ${day}`,

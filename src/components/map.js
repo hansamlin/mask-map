@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
-import { useStaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-
 import Marker from "./marker";
 import { MaskProvider } from "../store/maskProvider";
+import { green, orange, red } from "./icon";
+import { useStaticQuery, graphql } from "gatsby";
 
 const init = {
   lat: 25.081764,
@@ -14,16 +14,14 @@ const init = {
 
 export default () => {
   // const [position, setPosition] = useState(init);
-  let publicURL;
+  let icon;
   const { data } = useContext(MaskProvider);
 
   const {
     allFile: { nodes: source }
   } = useStaticQuery(graphql`
     {
-      allFile(
-        filter: { extension: { eq: "png" }, name: { regex: "/marker.+/" } }
-      ) {
+      allFile(filter: { name: { regex: "/marker-icon/" } }) {
         nodes {
           name
           publicURL
@@ -31,7 +29,6 @@ export default () => {
       }
     }
   `);
-  console.log(source);
 
   return (
     <Container
@@ -51,17 +48,21 @@ export default () => {
       <MarkerClusterGroup>
         {data.map(item => {
           if (item.adult_count + item.child_count >= 100) {
-            publicURL = source[2].publicURL;
+            [icon] = source.filter(item => item.name === "marker-icon-orange");
           } else {
-            publicURL = source[1].publicURL;
+            [icon] = source.filter(item => item.name === "marker-icon-red");
           }
 
           if (item.adult_count + item.child_count === 0) {
-            publicURL = source[0].publicURL;
+            [icon] = source.filter(item => item.name === "marker-icon-green");
           }
 
           return (
-            <Marker item={item} iconPublicURL={publicURL} key={item.code} />
+            <Marker
+              item={item}
+              iconPublicURL={icon.publicURL}
+              key={item.code}
+            />
           );
         })}
       </MarkerClusterGroup>

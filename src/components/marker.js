@@ -2,13 +2,11 @@ import React from "react";
 import { Marker /*, Popup*/ } from "react-leaflet";
 import L from "leaflet";
 import styled from "styled-components";
-import Red from "../images/icon_location_red.svg";
 
 export default props => {
-  // console.log(props);
-  const { location, adult_count, child_count } = props.item;
+  const { location } = props.item;
   const iconPublicURL = props.iconPublicURL;
-  console.log(iconPublicURL, Red);
+
   const icon = L.icon({
     iconUrl: iconPublicURL,
     shadowUrl:
