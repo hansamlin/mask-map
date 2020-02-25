@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import MarkerClusterGroup from "react-leaflet-markercluster";
@@ -7,20 +7,21 @@ import { MaskProvider } from "../store/maskProvider";
 import { useStaticQuery, graphql } from "gatsby";
 
 const init = {
-  lat: 25.081764,
-  lng: 121.552271
+  lat: 25.045655,
+  lng: 121.536456
 };
 
 export default () => {
-  // const [position, setPosition] = useState(init);
+  const [position, setPosition] = useState(init);
   let icon;
-  const { data } = useContext(MaskProvider);
+  let { data } = useContext(MaskProvider);
+  // data = data.slice(0, 5);
 
   const {
     allFile: { nodes: source }
   } = useStaticQuery(graphql`
     {
-      allFile(filter: { name: { regex: "/marker-icon/" } }) {
+      allFile(filter: { name: { regex: "/marker/" } }) {
         nodes {
           name
           publicURL
@@ -29,14 +30,26 @@ export default () => {
     }
   `);
 
+  const [shadow] = source.filter(item => item.name === "marker-shadow");
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      });
+    }
+  }, []);
+
   return (
     <Container
       zoom={16}
       zoomControl={false}
       maxZoom={18}
       minZoom={6}
-      center={init}
-      className="markercluster-map"
+      center={position}
     >
       <ZoomControl position="topright" />
       <WMSTileLayer
@@ -60,6 +73,7 @@ export default () => {
             <Marker
               item={item}
               iconPublicURL={icon.publicURL}
+              shadowPublicURL={shadow.publicURL}
               key={item.code}
             />
           );
