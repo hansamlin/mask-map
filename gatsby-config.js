@@ -1,5 +1,4 @@
 module.exports = {
-  pathPrefix: `gh-pages`,
   siteMetadata: {
     title: `Gatsby Default Starter`,
     description: `You can find number of mask from this map`,
