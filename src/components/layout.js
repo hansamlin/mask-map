@@ -28,5 +28,13 @@ export default ({ children }) => {
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
+
+  @media (min-width: 360px) {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 315px auto;
+  }
 `;

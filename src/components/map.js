@@ -94,6 +94,6 @@ export default () => {
 
 const Container = styled(Map)`
   height: 100vh;
-  width: calc(100% - 315px);
   z-index: 0;
+  transition: width 0.5s;
 `;
