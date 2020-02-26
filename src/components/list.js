@@ -1,15 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { MaskProvider } from "../store/maskProvider";
 
 import Block from "./block";
 
 export default () => {
-  let { store } = useContext(MaskProvider);
+  const { store } = useContext(MaskProvider);
   const [num, setNum] = useState(9);
 
   const handleLoad = () => {
-    if (store > 10) setNum(prev => prev + 10);
+    if (store.length > 10) setNum(prev => prev + 10);
   };
 
   return (
