@@ -4,7 +4,7 @@ import L from "leaflet";
 
 import Quantity from "./quantity";
 
-const getBuinessHours = (day, business_hours) => {
+export const getBuinessHours = (day, business_hours) => {
   let key, morning, afternoon, night;
   if (business_hours.length !== 21) {
     return "未公布";

@@ -6,11 +6,14 @@ import { useLeaflet } from "react-leaflet";
 import L, { markerClusterGroup } from "leaflet";
 import { createIcon, getIconUrl } from "./icon";
 import "react-leaflet-markercluster/dist/styles.min.css";
+import { popup } from "./popup";
+import "../style/popup.css";
 
 export default () => {
   let mcg = markerClusterGroup();
   const { map } = useLeaflet();
   window.map = map;
+
   const {
     allFile: { nodes: source }
   } = useStaticQuery(graphql`
@@ -51,12 +54,13 @@ export default () => {
         })
       })
         .addTo(mcg)
-        .bindPopup(`成人: ${item.adult_count}, 兒童: ${item.child_count}`);
+        .bindPopup(popup(item));
     });
   };
 
   useEffect(() => {
     mcg.clearLayers();
+
     marker();
     // optionally center the map around the markers
     // map.fitBounds(mcg.getBounds());
