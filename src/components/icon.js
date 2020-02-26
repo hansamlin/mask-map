@@ -16,5 +16,10 @@ export const getIconUrl = source => {
   const [red] = source.filter(item => item.name === "marker-icon-red");
   const [green] = source.filter(item => item.name === "marker-icon-green");
 
-  return { shadow, orange, red, green };
+  return {
+    shadow: shadow.publicURL,
+    orange: orange.publicURL,
+    red: red.publicURL,
+    green: green.publicURL
+  };
 };
