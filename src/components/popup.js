@@ -12,8 +12,8 @@ export const popup = item => {
     <div class="business-houres">營業時間 | ${business}</div>
     <div class="phone">聯絡電話 | ${item.phone}</div>
     <div class="quantity">
-      <div class="common adult">成人口罩 ${1000}個</div>
-      <div class="common child">兒童口罩 ${10000}個</div>
+      <div class="common adult">成人口罩 ${item.adult_count}個</div>
+      <div class="common child">兒童口罩 ${item.child_count}個</div>
     </div>
   </div>
   `;
