@@ -1,14 +1,9 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  createRef,
-  useMemo
-} from "react";
+import React, { useContext, useEffect, createRef, useMemo } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import { MaskProvider } from "../store/maskProvider";
 import MarkerGroup from "./markerGroup";
+import L from "leaflet";
 
 const init = {
   lat: 25.045655,
@@ -20,7 +15,6 @@ const getSixDigits = num => {
 };
 
 export default () => {
-  const [position, setPosition] = useState(init);
   const { setStore, data } = useContext(MaskProvider);
 
   const handleMoveEnd = e => {
@@ -46,12 +40,10 @@ export default () => {
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
 
-        setPosition({
-          lat: latitude,
-          lng: getSixDigits(longitude)
-        });
+        window.map.flyTo(new L.LatLng(latitude, getSixDigits(longitude)));
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -79,9 +71,10 @@ export default () => {
         zoomControl={false}
         maxZoom={18}
         minZoom={10}
-        center={position}
+        center={init}
         onmoveend={handleMoveEnd}
         ref={ref}
+        useFlyTo={true}
       >
         <ZoomControl position="topright" />
         <WMSTileLayer
@@ -93,7 +86,7 @@ export default () => {
       </Container>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [position]
+    []
   );
 };
 
