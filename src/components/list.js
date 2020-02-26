@@ -7,16 +7,16 @@ import Block from "./block";
 export default () => {
   let { store } = useContext(MaskProvider);
   const [num, setNum] = useState(9);
-
+  console.log(store);
   const handleLoad = () => {
     if (store > 10) setNum(prev => prev + 10);
   };
 
   return (
     <Container>
-      {store.slice(0, num).map(item => (
-        <Block item={item} key={item.code} />
-      ))}
+      {store.length > 0
+        ? store.slice(0, num).map(item => <Block item={item} key={item.code} />)
+        : null}
 
       <Button onClick={handleLoad}>載入更多</Button>
     </Container>
