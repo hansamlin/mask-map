@@ -7,9 +7,8 @@ import L, { markerClusterGroup } from "leaflet";
 import { createIcon, getIconUrl } from "./icon";
 import "react-leaflet-markercluster/dist/styles.min.css";
 
-let mcg = markerClusterGroup();
-
 export default () => {
+  let mcg = markerClusterGroup();
   const { map } = useLeaflet();
   window.map = map;
   const {
