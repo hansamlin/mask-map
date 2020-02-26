@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Button from "./button";
+import { FilterProvider } from "../store/filterProvider";
 
 export default () => {
-  const [check, setCheck] = useState({ all: true, adult: false, child: false });
+  const { filter } = useContext(FilterProvider);
 
   return (
     <Container>
-      <Button check={check.all} id="all" setCheck={setCheck}>
+      <Button filter={filter.all} id="all">
         所有口罩
       </Button>
-      <Button check={check.adult} id="adult" setCheck={setCheck}>
+      <Button filter={filter.adult} id="adult">
         成人口罩
       </Button>
-      <Button check={check.child} id="child" setCheck={setCheck}>
+      <Button filter={filter.child} id="child">
         兒童口罩
       </Button>
     </Container>

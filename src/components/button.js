@@ -1,27 +1,32 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useContext } from "react";
 import styled from "styled-components";
 
-export default ({ children, check, setCheck, id }) => {
-  const handleCheck = e => {
+import { FilterProvider } from "../store/filterProvider";
+
+export default ({ children, filter, id }) => {
+  const { setFilter } = useContext(FilterProvider);
+
+  const handleFilter = e => {
     const target = e.target.previousElementSibling.getAttribute("id");
     const check = e.target.previousElementSibling.checked;
+
     if (check === false) {
       e.target.previousElementSibling.checked = true;
       const tmp = { all: false, adult: false, child: false };
       tmp[target] = true;
-      setCheck(tmp);
+      setFilter(tmp);
     }
   };
 
   return useMemo(
     () => (
       <>
-        <Radio type="radio" name="filter" id={id} defaultChecked={check} />
-        <Button onClick={handleCheck}>{children}</Button>
+        <Radio type="radio" name="filter" id={id} defaultChecked={filter} />
+        <Button onClick={handleFilter}>{children}</Button>
       </>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [check]
+    [filter, handleFilter]
   );
 };
 

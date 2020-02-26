@@ -63,7 +63,7 @@ export default () => {
     // add the marker cluster group to the map
     map.addLayer(mcg);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map]);
+  }, [map, data]);
 
   return null;
 };

@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 import { useStaticQuery, graphql } from "gatsby";
+import { FilterProvider } from "./filterProvider";
 
 export const MaskProvider = createContext();
 
@@ -31,10 +32,23 @@ export default ({ children }) => {
     }
   `);
 
-  const data = source.maskdata.getMasks.payload.filter(item => {
+  const { filter } = useContext(FilterProvider);
+
+  let data = source.maskdata.getMasks.payload.filter(item => {
     return item.location;
   });
-  const [store, setStore] = useState([]);
+
+  let [store, setStore] = useState([]);
+
+  if (!filter.all) {
+    if (filter.adult) {
+      data = data.filter(item => item.adult_count > 0);
+      store = store.filter(item => item.adult_count > 0);
+    } else {
+      data = data.filter(item => item.child_count > 0);
+      store = store.filter(item => item.child_count > 0);
+    }
+  }
 
   return (
     <MaskProvider.Provider value={{ store, setStore, data }}>

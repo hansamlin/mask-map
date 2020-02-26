@@ -43,7 +43,6 @@ export default () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      console.log("asd");
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
 
