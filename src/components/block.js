@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import L from "leaflet";
 
 import Quantity from "./quantity";
 
@@ -31,7 +32,8 @@ export default props => {
     address,
     adult_count,
     child_count,
-    business_hours
+    business_hours,
+    location
   } = props.item;
 
   const now = new Date();
@@ -39,8 +41,13 @@ export default props => {
 
   const business = getBuinessHours(day, business_hours);
 
+  const focus = () => {
+    const { lat, lon } = location;
+    window.map.flyTo(new L.LatLng(lat, lon), 18);
+  };
+
   return (
-    <Container>
+    <Container onClick={focus}>
       <Name>{name}</Name>
       <Address>{address}</Address>
       <BusinessHours>營業時間 | {business}</BusinessHours>
@@ -55,6 +62,7 @@ const Container = styled.div`
   border-width: 0 0 1px 0;
   border-style: solid;
   border-color: #eaeaea;
+  cursor: pointer;
 `;
 
 const Name = styled.section`
