@@ -26,8 +26,7 @@ export default () => {
   return (
     <Container>
       {list.slice(0, num)}
-
-      <Button onClick={handleLoad}>載入更多</Button>
+      {num + 1 < store ? <Button onClick={handleLoad}>載入更多</Button> : null}
     </Container>
   );
 };
