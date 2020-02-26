@@ -8,7 +8,7 @@
 
 import React from "react";
 import Layout from "./src/components/layout";
-import Provider from "./src/store/maskProvider";
+import Provider from "./src/store/provider";
 import "react-leaflet-markercluster/dist/styles.min.css";
 
 export const wrapPageElement = ({ element, props }) => {

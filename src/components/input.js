@@ -34,6 +34,7 @@ const Submit = styled(Search)`
   position: absolute;
   top: 10px;
   right: 16px;
+  cursor: pointer;
 
   & > path {
     stroke: #cccccc;
