@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: `/mask-map`,
   siteMetadata: {
     title: `Gatsby Default Starter`,
     description: `You can find number of mask from this map`,
