@@ -40,12 +40,10 @@ export default ({ children }) => {
 
   let [store, setStore] = useState([]);
 
-  if (!filter.all) {
+  if (!filter.all && store.length > 0) {
     if (filter.adult) {
-      data = data.filter(item => item.adult_count > 0);
       store = store.filter(item => item.adult_count > 0);
     } else {
-      data = data.filter(item => item.child_count > 0);
       store = store.filter(item => item.child_count > 0);
     }
   }
