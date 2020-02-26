@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { MaskProvider } from "../store/maskProvider";
 
@@ -6,12 +6,19 @@ import Block from "./block";
 
 export default () => {
   let { store } = useContext(MaskProvider);
+  const [num, setNum] = useState(9);
+
+  const handleLoad = () => {
+    if (store > 10) setNum(prev => prev + 10);
+  };
 
   return (
     <Container>
-      {store.map(item => (
+      {store.slice(0, num).map(item => (
         <Block item={item} key={item.code} />
       ))}
+
+      <Button onClick={handleLoad}>載入更多</Button>
     </Container>
   );
 };
@@ -39,4 +46,13 @@ const Container = styled.div`
     border-radius: 10px;
     background-color: #fff;
   }
+`;
+
+const Button = styled.div`
+  width: 100px;
+  height: 50px;
+  margin: auto;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
 `;
