@@ -11,7 +11,7 @@ let mcg = markerClusterGroup();
 
 export default () => {
   const { map } = useLeaflet();
-
+  window.map = map;
   const {
     allFile: { nodes: source }
   } = useStaticQuery(graphql`
@@ -36,19 +36,19 @@ export default () => {
       const total = adult_count + child_count;
 
       if (total >= 100) {
-        iconUrl = orange.publicURL;
+        iconUrl = orange;
       } else {
-        iconUrl = red.publicURL;
+        iconUrl = red;
       }
 
       if (total === 0) {
-        iconUrl = green.publicURL;
+        iconUrl = green;
       }
 
       L.marker(new L.LatLng(location.lat, location.lon), {
         icon: createIcon({
           iconUrl,
-          shadowUrl: shadow.publicURL
+          shadowUrl: shadow
         })
       })
         .addTo(mcg)
