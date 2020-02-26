@@ -5,6 +5,7 @@ import { useStaticQuery, graphql } from "gatsby";
 import { useLeaflet } from "react-leaflet";
 import L, { markerClusterGroup } from "leaflet";
 import { createIcon, getIconUrl } from "./icon";
+import "react-leaflet-markercluster/dist/styles.min.css";
 
 let mcg = markerClusterGroup();
 
