@@ -25,6 +25,7 @@ export default () => {
 const Container = styled.div`
   @media (min-width: 360px) {
     height: 100vh;
+    width: 315px;
     -webkit-box-shadow: 5px 0px 15px -8px rgba(0, 0, 0, 0.77);
     -moz-box-shadow: 5px 0px 15px -8px rgba(0, 0, 0, 0.77);
     box-shadow: 5px 0px 15px -8px rgba(0, 0, 0, 0.77);
