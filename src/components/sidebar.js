@@ -4,13 +4,16 @@ import styled from "styled-components";
 import Info from "./info";
 import Search from "./search";
 import List from "./list";
+import TextProvider from "../store/textProvider";
 
 export default () => {
   return (
     <Container>
       <Info />
-      <Search />
-      <List />
+      <TextProvider>
+        <Search />
+        <List />
+      </TextProvider>
     </Container>
   );
 };

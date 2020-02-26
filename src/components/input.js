@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Search from "../images/search.svg";
+import { TextProvider } from "../store/textProvider";
 
 export default () => {
+  const { setText } = useContext(TextProvider);
+  const handleChange = e => setText(e.target.value);
+
   return (
     <Container>
-      <Input type="text" placeholder="搜尋..." />
+      <Input type="text" placeholder="搜尋..." onChange={handleChange} />
       <Submit width="20" height="20" />
     </Container>
   );

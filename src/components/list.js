@@ -1,22 +1,31 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { MaskProvider } from "../store/maskProvider";
+import { TextProvider } from "../store/textProvider";
 
 import Block from "./block";
 
 export default () => {
   const { store } = useContext(MaskProvider);
+  const { text } = useContext(TextProvider);
   const [num, setNum] = useState(9);
+  let list = [];
 
   const handleLoad = () => {
     if (store.length > 10) setNum(prev => prev + 10);
   };
 
+  store.forEach(item => {
+    if (item.name.indexOf(text) === -1) {
+      return;
+    }
+
+    list.push(<Block item={item} key={item.code} />);
+  });
+
   return (
     <Container>
-      {store.length > 0
-        ? store.slice(0, num).map(item => <Block item={item} key={item.code} />)
-        : null}
+      {list.slice(0, num)}
 
       <Button onClick={handleLoad}>載入更多</Button>
     </Container>
