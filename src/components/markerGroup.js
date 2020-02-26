@@ -1,19 +1,16 @@
-import React, { useContext, useMemo, createRef } from "react";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+import { useContext, useEffect } from "react";
+import "leaflet.markercluster";
 import { MaskProvider } from "../store/maskProvider";
 import { useStaticQuery, graphql } from "gatsby";
-import Marker from "./marker";
+import { useLeaflet } from "react-leaflet";
+import L, { markerClusterGroup } from "leaflet";
+import { createIcon, getIconUrl } from "./icon";
 
-const getIcon = source => {
-  const [shadow] = source.filter(item => item.name === "marker-shadow");
-  const [orange] = source.filter(item => item.name === "marker-icon-orange");
-  const [red] = source.filter(item => item.name === "marker-icon-red");
-  const [green] = source.filter(item => item.name === "marker-icon-green");
-
-  return { shadow, orange, red, green };
-};
+let mcg = markerClusterGroup();
 
 export default () => {
+  const { map } = useLeaflet();
+
   const {
     allFile: { nodes: source }
   } = useStaticQuery(graphql`
@@ -26,19 +23,47 @@ export default () => {
       }
     }
   `);
-  const icon = getIcon(source);
+
+  const { shadow, orange, red, green } = getIconUrl(source);
 
   const { data } = useContext(MaskProvider);
+  let iconUrl;
 
-  return useMemo(
-    () => (
-      <MarkerClusterGroup>
-        {data.map(item => {
-          return <Marker item={item} icon={icon} key={item.code} />;
-        })}
-      </MarkerClusterGroup>
-    ),
+  const marker = () => {
+    data.forEach(item => {
+      const { location, adult_count, child_count } = item;
+      const total = adult_count + child_count;
+
+      if (total >= 100) {
+        iconUrl = orange.publicURL;
+      } else {
+        iconUrl = red.publicURL;
+      }
+
+      if (total === 0) {
+        iconUrl = green.publicURL;
+      }
+
+      L.marker(new L.LatLng(location.lat, location.lon), {
+        icon: createIcon({
+          iconUrl,
+          shadowUrl: shadow.publicURL
+        })
+      })
+        .addTo(mcg)
+        .bindPopup(`成人: ${item.adult_count}, 兒童: ${item.child_count}`);
+    });
+  };
+
+  useEffect(() => {
+    mcg.clearLayers();
+    marker();
+    // optionally center the map around the markers
+    // map.fitBounds(mcg.getBounds());
+    // add the marker cluster group to the map
+    map.addLayer(mcg);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  }, [map]);
+
+  return null;
 };
