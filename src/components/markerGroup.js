@@ -16,7 +16,6 @@ export default () => {
 
   const { map } = useLeaflet();
   window.map = map;
-  window.mcg = mcg;
 
   const {
     allFile: { nodes: source }
