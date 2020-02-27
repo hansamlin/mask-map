@@ -1,17 +1,18 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useContext, useRef } from "react";
 import styled from "styled-components";
 
 import { FilterProvider } from "../store/filterProvider";
 
 export default ({ children, filter, id }) => {
   const { setFilter } = useContext(FilterProvider);
+  const radioRef = useRef();
 
-  const handleFilter = e => {
-    const target = e.target.previousElementSibling.getAttribute("id");
-    const check = e.target.previousElementSibling.checked;
+  const handleFilter = () => {
+    const target = radioRef.current.getAttribute("id");
+    const check = radioRef.current.checked;
 
     if (check === false) {
-      e.target.previousElementSibling.checked = true;
+      radioRef.current.checked = true;
       const tmp = { all: false, adult: false, child: false };
       tmp[target] = true;
       setFilter(tmp);
@@ -20,26 +21,33 @@ export default ({ children, filter, id }) => {
 
   return useMemo(
     () => (
-      <>
-        <Radio type="radio" name="filter" id={id} defaultChecked={filter} />
+      <label>
+        <Radio
+          type="radio"
+          name="filter"
+          id={id}
+          defaultChecked={filter}
+          ref={radioRef}
+        />
+        {console.log('render')}
         <Button onClick={handleFilter}>{children}</Button>
-      </>
+      </label>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filter, handleFilter]
+    [filter]
   );
 };
 
 const Radio = styled.input`
   display: none;
 
-  &:checked + div {
+  &:checked + button {
     background-color: #d65600;
     color: #fff;
   }
 `;
 
-const Button = styled.div`
+const Button = styled.button`
   width: 84px;
   height: 36px;
   line-height: 36px;
@@ -50,4 +58,5 @@ const Button = styled.div`
   font-size: 14px;
   text-align: center;
   cursor: pointer;
+  outline: none;
 `;
