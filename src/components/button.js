@@ -29,7 +29,6 @@ export default ({ children, filter, id }) => {
           defaultChecked={filter}
           ref={radioRef}
         />
-        {console.log('render')}
         <Button onClick={handleFilter}>{children}</Button>
       </label>
     ),
