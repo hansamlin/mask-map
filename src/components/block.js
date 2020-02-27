@@ -3,6 +3,7 @@ import styled from "styled-components";
 import L from "leaflet";
 
 import Quantity from "./quantity";
+import { popup as content } from "./popup";
 
 export const getBuinessHours = (day, business_hours) => {
   let key, morning, afternoon, night;
@@ -43,7 +44,14 @@ export default props => {
 
   const focus = () => {
     const { lat, lon } = location;
-    window.map.flyTo(new L.LatLng(lat, lon), 18);
+    const map = window.map;
+
+    const popup = L.popup()
+      .setLatLng([lat, lon])
+      .setContent(content(props.item))
+      .openOn(map);
+
+    map.setView(new L.LatLng(lat, lon), 18).openPopup(popup);
   };
 
   return (

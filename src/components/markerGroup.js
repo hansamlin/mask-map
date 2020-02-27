@@ -11,10 +11,12 @@ import "../style/popup.css";
 
 export default () => {
   let mcg = markerClusterGroup({
-    disableClusteringAtZoom: 18
+    disableClusteringAtZoom: 17
   });
+
   const { map } = useLeaflet();
   window.map = map;
+  window.mcg = mcg;
 
   const {
     allFile: { nodes: source }

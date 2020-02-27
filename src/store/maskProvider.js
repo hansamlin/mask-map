@@ -5,7 +5,7 @@ import { FilterProvider } from "./filterProvider";
 export const MaskProvider = createContext();
 
 export default ({ children }) => {
-  const source = useStaticQuery(graphql`
+  const { maskdata } = useStaticQuery(graphql`
     {
       maskdata {
         getMasks {
@@ -34,7 +34,7 @@ export default ({ children }) => {
 
   const { filter } = useContext(FilterProvider);
 
-  let data = source.maskdata.getMasks.payload.filter(item => {
+  let data = maskdata.getMasks.payload.filter(item => {
     return item.location;
   });
 

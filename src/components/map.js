@@ -14,28 +14,34 @@ const getSixDigits = num => {
   return Math.floor(num * 1000000) / 1000000;
 };
 
+const getBounds = (data, _southWest, _northEast) => {
+  return data.filter(item => {
+    const { location } = item;
+
+    return (
+      location.lat > getSixDigits(_southWest.lat) &&
+      location.lon > getSixDigits(_southWest.lng) &&
+      location.lat < getSixDigits(_northEast.lat) &&
+      location.lon < getSixDigits(_northEast.lng)
+    );
+  });
+};
+
 export default () => {
   const { setStore, data } = useContext(MaskProvider);
+  const ref = createRef();
 
-  const handleMoveEnd = e => {
-    const { _southWest, _northEast } = e.target.getBounds();
+  const setVisibleData = bounds => {
+    const { _southWest, _northEast } = bounds;
 
-    const visibleData = data.filter(item => {
-      const { location } = item;
-
-      return (
-        location.lat > getSixDigits(_southWest.lat) &&
-        location.lon > getSixDigits(_southWest.lng) &&
-        location.lat < getSixDigits(_northEast.lat) &&
-        location.lon < getSixDigits(_northEast.lng)
-      );
-    });
+    const visibleData = getBounds(data, _southWest, _northEast);
 
     setStore(visibleData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
-  const ref = createRef();
+  const handleMoveEnd = e => {
+    setVisibleData(e.target.getBounds());
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -49,20 +55,7 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    const { _southWest, _northEast } = ref.current.leafletElement.getBounds();
-
-    const visibleData = data.filter(item => {
-      const { location } = item;
-
-      return (
-        location.lat > getSixDigits(_southWest.lat) &&
-        location.lon > getSixDigits(_southWest.lng) &&
-        location.lat < getSixDigits(_northEast.lat) &&
-        location.lon < getSixDigits(_northEast.lng)
-      );
-    });
-
-    setStore(visibleData);
+    setVisibleData(ref.current.leafletElement.getBounds());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,7 +69,7 @@ export default () => {
         center={init}
         onmoveend={handleMoveEnd}
         ref={ref}
-        useFlyTo={true}
+        // useFlyTo={true}
       >
         <ZoomControl position="topright" />
         <WMSTileLayer
