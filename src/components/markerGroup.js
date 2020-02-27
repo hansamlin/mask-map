@@ -1,19 +1,16 @@
-import { useContext, useEffect } from "react";
-import "leaflet.markercluster";
+import React, { useContext } from "react";
+// import "leaflet.markercluster";
 import { MaskProvider } from "../store/maskProvider";
 import { useStaticQuery, graphql } from "gatsby";
-import { useLeaflet } from "react-leaflet";
-import L, { markerClusterGroup } from "leaflet";
+import { useLeaflet, GeoJSON } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import L from "leaflet";
 import { createIcon, getIconUrl } from "./icon";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import { popup } from "./popup";
 import "../style/popup.css";
 
 export default () => {
-  let mcg = markerClusterGroup({
-    disableClusteringAtZoom: 17
-  });
-
   const { map } = useLeaflet();
   window.map = map;
 
@@ -32,45 +29,44 @@ export default () => {
 
   const { shadow, orange, red, green } = getIconUrl(source);
 
-  const { data } = useContext(MaskProvider);
+  const { geoJson } = useContext(MaskProvider);
   let iconUrl;
 
-  const marker = () => {
-    data.forEach(item => {
-      const { location, adult_count, child_count } = item;
-      const total = adult_count + child_count;
+  const createCustomIcon = (feature, latlng) => {
+    const { mask_adult, mask_child } = feature.properties;
 
-      if (total >= 100) {
-        iconUrl = orange;
-      } else {
-        iconUrl = red;
-      }
+    const total = mask_adult + mask_child;
 
-      if (total === 0) {
-        iconUrl = green;
-      }
+    if (total >= 100) {
+      iconUrl = orange;
+    } else {
+      iconUrl = red;
+    }
 
-      L.marker(new L.LatLng(location.lat, location.lon), {
-        icon: createIcon({
-          iconUrl,
-          shadowUrl: shadow
-        })
+    if (total === 0) {
+      iconUrl = green;
+    }
+
+    return L.marker(latlng, {
+      icon: createIcon({
+        iconUrl,
+        shadowUrl: shadow
       })
-        .addTo(mcg)
-        .bindPopup(popup(item));
     });
   };
 
-  useEffect(() => {
-    mcg.clearLayers();
+  const onEachFeature = (feature, layer) => {
+    layer.bindPopup(popup(feature.properties));
+  };
 
-    marker();
-    // optionally center the map around the markers
-    // map.fitBounds(mcg.getBounds());
-    // add the marker cluster group to the map
-    map.addLayer(mcg);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map]);
-
-  return null;
+  return (
+    <MarkerClusterGroup disableClusteringAtZoom={17}>
+      <GeoJSON
+        key="geoJson"
+        data={geoJson}
+        pointToLayer={createCustomIcon}
+        onEachFeature={onEachFeature}
+      />
+    </MarkerClusterGroup>
+  );
 };

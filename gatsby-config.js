@@ -59,6 +59,13 @@ module.exports = {
         url: "https://mask-data-farmer.herokuapp.com/graphql",
         refetchInterval: 60
       }
+    },
+    {
+      resolve: "gatsby-source-custom-api",
+      options: {
+        url: "https://kiang.github.io/pharmacies/json/points.json",
+        rootKey: "maskdataJson"
+      }
     }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline

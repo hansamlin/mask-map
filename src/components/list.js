@@ -10,17 +10,25 @@ export default () => {
   const { text } = useContext(TextProvider);
   const [num, setNum] = useState(9);
   let list = [];
-
+  console.log(store);
   const handleLoad = () => {
     if (store.length > 10) setNum(prev => prev + 10);
   };
 
   store.forEach(item => {
-    if (item.name.indexOf(text) === -1) {
+    if (item.properties.name.indexOf(text) === -1) {
       return;
     }
 
-    list.push(<Block item={item} key={item.code} />);
+    const [lng, lat] = item.geometry.coordinates;
+
+    list.push(
+      <Block
+        properties={item.properties}
+        coordinates={[lat, lng]}
+        key={item.properties.id}
+      />
+    );
   });
 
   return (

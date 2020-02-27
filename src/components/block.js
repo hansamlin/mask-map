@@ -5,61 +5,29 @@ import L from "leaflet";
 import Quantity from "./quantity";
 import { popup as content } from "./popup";
 
-export const getBuinessHours = (day, business_hours) => {
-  let key, morning, afternoon, night;
-  if (business_hours.length !== 21) {
-    return "未公布";
-  }
-
-  if (day === 0) {
-    key = day + 6;
-  } else {
-    key = day - 1;
-  }
-  morning = key;
-  afternoon = key + 7;
-  night = key + 14;
-
-  return [
-    business_hours[morning].slice(-4),
-    business_hours[afternoon].slice(-4),
-    business_hours[night].slice(-4)
-  ].join(", ");
-};
-
 export default props => {
-  const {
-    name,
-    address,
-    adult_count,
-    child_count,
-    business_hours,
-    location
-  } = props.item;
+  const { name, address, mask_adult, mask_child, note } = props.properties;
 
-  const now = new Date();
-  const day = now.getDay();
-
-  const business = getBuinessHours(day, business_hours);
+  const [lat, lng] = props.coordinates;
 
   const focus = () => {
-    const { lat, lon } = location;
+    // const { lat, lon } = location;
     const map = window.map;
 
     const popup = L.popup()
-      .setLatLng([parseFloat(lat) + 0.00015, lon])
-      .setContent(content(props.item))
+      .setLatLng([parseFloat(lat) + 0.00015, lng])
+      .setContent(content(props.properties))
       .openOn(map);
 
-    map.setView(new L.LatLng(lat, lon), 18).openPopup(popup);
+    map.setView(new L.LatLng(lat, lng), 18).openPopup(popup);
   };
 
   return (
     <Container onClick={focus}>
       <Name>{name}</Name>
       <Address>{address}</Address>
-      <BusinessHours>營業時間 | {business}</BusinessHours>
-      <Quantity adultCount={adult_count} childCount={child_count} />
+      <BusinessHours>營業時間 | {note}</BusinessHours>
+      <Quantity adultCount={mask_adult} childCount={mask_child} />
     </Container>
   );
 };

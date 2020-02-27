@@ -10,31 +10,27 @@ const init = {
   lng: 121.536456
 };
 
-const getSixDigits = num => {
-  return Math.floor(num * 1000000) / 1000000;
-};
-
-const getBounds = (data, _southWest, _northEast) => {
-  return data.filter(item => {
-    const { location } = item;
+const getBounds = (geoJson, _southWest, _northEast) => {
+  return geoJson.features.filter(item => {
+    const [lng, lat] = item.geometry.coordinates;
 
     return (
-      location.lat > getSixDigits(_southWest.lat) &&
-      location.lon > getSixDigits(_southWest.lng) &&
-      location.lat < getSixDigits(_northEast.lat) &&
-      location.lon < getSixDigits(_northEast.lng)
+      lat > _southWest.lat &&
+      lng > _southWest.lng &&
+      lat < _northEast.lat &&
+      lng < _northEast.lng
     );
   });
 };
 
 export default () => {
-  const { setStore, data } = useContext(MaskProvider);
+  const { setStore, geoJson } = useContext(MaskProvider);
   const ref = createRef();
 
   const setVisibleData = bounds => {
     const { _southWest, _northEast } = bounds;
 
-    const visibleData = getBounds(data, _southWest, _northEast);
+    const visibleData = getBounds(geoJson, _southWest, _northEast);
 
     setStore(visibleData);
   };
@@ -48,7 +44,7 @@ export default () => {
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude } = position.coords;
 
-        window.map.flyTo(new L.LatLng(latitude, getSixDigits(longitude)));
+        window.map.flyTo(new L.LatLng(latitude, longitude));
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +65,6 @@ export default () => {
         center={init}
         onmoveend={handleMoveEnd}
         ref={ref}
-        // useFlyTo={true}
       >
         <ZoomControl position="topright" />
         <WMSTileLayer

@@ -5,26 +5,27 @@ import { FilterProvider } from "./filterProvider";
 export const MaskProvider = createContext();
 
 export default ({ children }) => {
-  const { maskdata } = useStaticQuery(graphql`
+  const { allMaskdataJson } = useStaticQuery(graphql`
     {
-      maskdata {
-        getMasks {
-          total
-          status
-          message
-          errors
-          payload {
-            code
-            name
-            phone
-            address
-            adult_count
-            child_count
-            business_hours
-            updated_at
-            location {
-              lat
-              lon
+      allMaskdataJson {
+        nodes {
+          type
+          features {
+            type
+            properties {
+              address
+              available
+              mask_adult
+              mask_child
+              name
+              note
+              phone
+              updated
+              id
+            }
+            geometry {
+              coordinates
+              type
             }
           }
         }
@@ -34,22 +35,20 @@ export default ({ children }) => {
 
   const { filter } = useContext(FilterProvider);
 
-  let data = maskdata.getMasks.payload.filter(item => {
-    return item.location;
-  });
+  const [geoJson] = allMaskdataJson.nodes;
 
   let [store, setStore] = useState([]);
-
+  console.log(store);
   if (!filter.all && store.length > 0) {
     if (filter.adult) {
-      store = store.filter(item => item.adult_count > 0);
+      store = store.filter(item => item.properties.mask_adult > 0);
     } else {
-      store = store.filter(item => item.child_count > 0);
+      store = store.filter(item => item.properties.mask_child > 0);
     }
   }
 
   return (
-    <MaskProvider.Provider value={{ store, setStore, data }}>
+    <MaskProvider.Provider value={{ store, setStore, geoJson }}>
       {children}
     </MaskProvider.Provider>
   );
