@@ -10,7 +10,9 @@ import { popup } from "./popup";
 import "../style/popup.css";
 
 export default () => {
-  let mcg = markerClusterGroup();
+  let mcg = markerClusterGroup({
+    disableClusteringAtZoom: 18
+  });
   const { map } = useLeaflet();
   window.map = map;
 
