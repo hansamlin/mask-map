@@ -10,7 +10,7 @@ export default () => {
   const { text } = useContext(TextProvider);
   const [num, setNum] = useState(9);
   let list = [];
-  console.log(store);
+
   const handleLoad = () => {
     if (store.length > 10) setNum(prev => prev + 10);
   };

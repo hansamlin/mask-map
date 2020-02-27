@@ -38,7 +38,7 @@ export default ({ children }) => {
   const [geoJson] = allMaskdataJson.nodes;
 
   let [store, setStore] = useState([]);
-  console.log(store);
+
   if (!filter.all && store.length > 0) {
     if (filter.adult) {
       store = store.filter(item => item.properties.mask_adult > 0);
