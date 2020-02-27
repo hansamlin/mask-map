@@ -47,7 +47,7 @@ export default props => {
     const map = window.map;
 
     const popup = L.popup()
-      .setLatLng([lat, lon])
+      .setLatLng([parseFloat(lat) + 0.00015, lon])
       .setContent(content(props.item))
       .openOn(map);
 
