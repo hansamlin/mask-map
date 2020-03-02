@@ -10,7 +10,7 @@ export default () => {
   const [toggle, setToggle] = useState(true);
 
   const handleToggle = () => setToggle(prev => !prev);
-
+  console.log(toggle);
   return (
     <ThemeProvider theme={{ toggle }}>
       <Container>
@@ -45,10 +45,6 @@ const Container = styled.div`
   @media (min-width: 768px) {
     position: relative;
     transform: translateX(0);
-
-    &::after {
-      display: none;
-    }
   }
 `;
 
@@ -66,4 +62,10 @@ const Toggle = styled.button`
   z-index: -1;
   transform: ${props => props.theme.toggle && "scaleX(-1)"};
   outline: none;
+  border: 0;
+  border-left: 1px solid #d4d4d4;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
