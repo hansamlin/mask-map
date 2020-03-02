@@ -6,7 +6,7 @@ export const MaskProvider = createContext();
 export default ({ children }) => {
   const { filter } = useContext(FilterProvider);
   let [store, setStore] = useState([]);
-  const geoJson = useGeoJsonData();
+  const { geoJson, isloading } = useGeoJsonData();
 
   if (!filter.all && store.length > 0) {
     if (filter.adult) {
@@ -17,7 +17,7 @@ export default ({ children }) => {
   }
 
   return (
-    <MaskProvider.Provider value={{ store, setStore, geoJson }}>
+    <MaskProvider.Provider value={{ store, setStore, geoJson, isloading }}>
       {children}
     </MaskProvider.Provider>
   );
@@ -25,6 +25,7 @@ export default ({ children }) => {
 
 const useGeoJsonData = () => {
   const [geoJson, setGeoJson] = useState({});
+  const [isloading, setIsLoading] = useState(true);
 
   const getData = async () => {
     fetch("https://kiang.github.io/pharmacies/json/points.json")
@@ -36,5 +37,9 @@ const useGeoJsonData = () => {
     getData();
   }, []);
 
-  return geoJson;
+  useEffect(() => {
+    if (geoJson.hasOwnProperty("features")) setIsLoading(false);
+  }, [geoJson]);
+
+  return { geoJson, isloading };
 };

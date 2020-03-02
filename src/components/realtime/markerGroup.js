@@ -28,7 +28,7 @@ export default () => {
 
   const { shadow, orange, red, green } = getIconUrl(source);
 
-  const { geoJson } = useContext(MaskProvider);
+  const { geoJson, isloading } = useContext(MaskProvider);
   let iconUrl;
 
   const createCustomIcon = (feature, latlng) => {
@@ -58,7 +58,7 @@ export default () => {
     layer.bindPopup(popup(feature.properties));
   };
 
-  return (
+  const markGroup = isloading ? null : (
     <MarkerClusterGroup disableClusteringAtZoom={17}>
       <GeoJSON
         key="geoJson"
@@ -68,4 +68,6 @@ export default () => {
       />
     </MarkerClusterGroup>
   );
+
+  return markGroup;
 };

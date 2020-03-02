@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback
+} from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import { MaskProvider } from "../../store/realtime/maskProvider";
@@ -24,57 +31,71 @@ const getBounds = (geoJson, _southWest, _northEast) => {
 };
 
 export default () => {
-  const { setStore, geoJson } = useContext(MaskProvider);
+  const { setStore, geoJson, isloading } = useContext(MaskProvider);
   const mapRef = useRef();
-  const markerGroup = geoJson.hasOwnProperty("features") ? (
-    <MarkerGroup />
-  ) : null;
 
   const setVisibleData = bounds => {
     const { _southWest, _northEast } = bounds;
-    if (geoJson.hasOwnProperty("features")) {
-      const visibleData = getBounds(geoJson, _southWest, _northEast);
 
+    if (!isloading) {
+      const visibleData = getBounds(geoJson, _southWest, _northEast);
       setStore(visibleData);
     }
   };
 
-  const handleMoveEnd = e => {
-    setVisibleData(e.target.getBounds());
-  };
-
-  useEffect(() => {
-    setVisibleData(mapRef.current.leafletElement.getBounds());
+  const handleMoveEnd = useCallback(
+    e => {
+      if (!isloading) {
+        setVisibleData(e.target.getBounds());
+      }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [geoJson]);
+    [isloading]
+  );
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
+    if (!isloading) {
+      setVisibleData(mapRef.current.leafletElement.getBounds());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isloading]);
 
-      mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
-    });
-  }, []);
+  useNavigator(isloading, mapRef);
 
-  return (
-    <Container
-      zoom={16}
-      zoomControl={false}
-      maxZoom={18}
-      minZoom={10}
-      center={init}
-      onmoveend={handleMoveEnd}
-      ref={mapRef}
-    >
-      <ZoomControl position="topright" />
-      <WMSTileLayer
-        attribution={`Map data <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Sam`}
-        url="https://wmts.nlsc.gov.tw/wmts/EMAP/default/EPSG:3857/{z}/{y}/{x}"
-      />
-
-      {markerGroup}
-    </Container>
+  return React.useMemo(
+    () => (
+      <Container
+        zoom={16}
+        zoomControl={false}
+        maxZoom={18}
+        minZoom={10}
+        center={init}
+        onmoveend={handleMoveEnd}
+        ref={mapRef}
+      >
+        <ZoomControl position="topright" />
+        <WMSTileLayer
+          attribution={`Map data <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Sam`}
+          url="https://wmts.nlsc.gov.tw/wmts/EMAP/default/EPSG:3857/{z}/{y}/{x}"
+        />
+        <MarkerGroup />
+      </Container>
+    ),
+    [handleMoveEnd]
   );
+};
+
+const useNavigator = (isloading, mapRef) => {
+  useEffect(() => {
+    if (!isloading) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+
+        mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isloading]);
 };
 
 const Container = styled(Map)`
