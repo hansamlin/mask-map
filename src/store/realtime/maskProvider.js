@@ -1,20 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
-import { FilterProvider } from "../filterProvider";
+import React, { createContext, useState, useEffect } from "react";
 
 export const MaskProvider = createContext();
 
 export default ({ children }) => {
-  const { filter } = useContext(FilterProvider);
-  let [store, setStore] = useState([]);
+  const [store, setStore] = useState([]);
   const { geoJson, isloading } = useGeoJsonData();
-
-  if (!filter.all && store.length > 0) {
-    if (filter.adult) {
-      store = store.filter(item => item.properties.mask_adult > 0);
-    } else {
-      store = store.filter(item => item.properties.mask_child > 0);
-    }
-  }
 
   return (
     <MaskProvider.Provider value={{ store, setStore, geoJson, isloading }}>

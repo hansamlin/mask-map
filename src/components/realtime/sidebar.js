@@ -5,6 +5,7 @@ import Info from "../info";
 import Search from "../search";
 import List from "./list";
 import TextProvider from "../../store/textProvider";
+import FilterProvider from "../../store/filterProvider";
 
 export default () => {
   const [toggle, setToggle] = useState(true);
@@ -16,8 +17,10 @@ export default () => {
       <Container>
         <Info />
         <TextProvider>
-          <Search />
-          <List />
+          <FilterProvider>
+            <Search />
+            <List />
+          </FilterProvider>
         </TextProvider>
         <Toggle onClick={handleToggle}></Toggle>
       </Container>

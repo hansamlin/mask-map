@@ -2,20 +2,31 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { MaskProvider } from "../../store/realtime/maskProvider";
 import { TextProvider } from "../../store/textProvider";
+import { FilterProvider } from "../../store/filterProvider";
 
 import Block from "../block";
 
 export default () => {
   const { store } = useContext(MaskProvider);
   const { text } = useContext(TextProvider);
+  const { filter } = useContext(FilterProvider);
   const [num, setNum] = useState(9);
   let list = [];
+  let data = store;
 
   const handleLoad = () => {
-    if (store.length > 10) setNum(prev => prev + 10);
+    if (data.length > 10) setNum(prev => prev + 10);
   };
 
-  store.forEach(item => {
+  if (!filter.all && store.length > 0) {
+    if (filter.adult) {
+      data = store.filter(item => item.properties.mask_adult > 0);
+    } else {
+      data = store.filter(item => item.properties.mask_child > 0);
+    }
+  }
+
+  data.forEach(item => {
     if (item.properties.name.indexOf(text) === -1) {
       return;
     }
