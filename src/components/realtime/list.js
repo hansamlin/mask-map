@@ -31,12 +31,15 @@ export default () => {
     );
   });
 
+  const loadMoreButton =
+    num + 1 < list.length ? (
+      <Button onClick={handleLoad}>載入更多</Button>
+    ) : null;
+
   return (
     <Container>
       {list.slice(0, num)}
-      {num + 1 < store.length ? (
-        <Button onClick={handleLoad}>載入更多</Button>
-      ) : null}
+      {loadMoreButton}
     </Container>
   );
 };
