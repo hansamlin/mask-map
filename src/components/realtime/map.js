@@ -26,7 +26,6 @@ const getBounds = (geoJson, _southWest, _northEast) => {
 export default () => {
   const { setStore, geoJson, isloading } = useContext(MaskProvider);
   const mapRef = useRef();
-  const firstRef = useRef(false);
 
   const setVisibleData = bounds => {
     const { _southWest, _northEast } = bounds;
@@ -36,14 +35,6 @@ export default () => {
       setStore(visibleData);
     }
   };
-
-  useEffect(() => {
-    if (!isloading) {
-      if (!firstRef.current) {
-        firstRef.current = true;
-      }
-    }
-  }, [isloading]);
 
   const handleMoveEnd = useCallback(
     e => {
@@ -62,7 +53,7 @@ export default () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isloading]);
 
-  useNavigator(mapRef, firstRef);
+  useNavigator(mapRef);
 
   return React.useMemo(
     () => (
@@ -87,13 +78,15 @@ export default () => {
   );
 };
 
-const useNavigator = (mapRef, firstRef) => {
+const useNavigator = mapRef => {
+  const initRef = useRef(false);
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
 
       const popup = L.popup()
-        .setLatLng([parseFloat(latitude) + 0.00015, longitude])
+        .setLatLng([latitude, longitude])
         .setContent(`我的位置`)
         .openOn(mapRef.current.leafletElement);
 
@@ -104,7 +97,7 @@ const useNavigator = (mapRef, firstRef) => {
       mapRef.current.leafletElement.flyTo(new LatLng(latitude, longitude));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [firstRef]);
+  }, [initRef]);
 };
 
 const Container = styled(Map)`
