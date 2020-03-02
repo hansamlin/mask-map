@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { MaskProvider } from "../store/maskProvider";
+import { MaskProvider } from "../../store/realtime/maskProvider";
 import { useStaticQuery, graphql } from "gatsby";
 import { useLeaflet, GeoJSON } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
-import { createIcon, getIconUrl } from "./icon";
+import { createIcon, getIconUrl } from "../icon";
 import "react-leaflet-markercluster/dist/styles.min.css";
-import { popup } from "./popup";
-import "../style/popup.css";
+import { popup } from "../popup";
+import "../../style/popup.css";
 
 export default () => {
   const { map } = useLeaflet();

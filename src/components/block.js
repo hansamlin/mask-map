@@ -11,7 +11,6 @@ export default props => {
   const [lat, lng] = props.coordinates;
 
   const focus = () => {
-    // const { lat, lon } = location;
     const map = window.map;
 
     const popup = L.popup()

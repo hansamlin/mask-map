@@ -1,12 +1,12 @@
 import React from "react";
 
 import Seo from "../components/seo";
-import Map from "../components/map";
-import Sidebar from "../components/sidebar";
-import Provider from "../store/provider";
+import Map from "../components/realtime/map";
+import Sidebar from "../components/realtime/sidebar";
+import Provider from "../store/realtime/provider";
 import Layout from "../components/layout";
 
-const IndexPage = () => {
+export default () => {
   return (
     <Layout>
       <Provider>
@@ -17,5 +17,3 @@ const IndexPage = () => {
     </Layout>
   );
 };
-
-export default IndexPage;
