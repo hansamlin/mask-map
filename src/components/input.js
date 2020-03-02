@@ -32,6 +32,7 @@ const Input = styled.input`
   padding: 10px 16px;
   font-size: 16px;
   position: relative;
+  outline: none;
 `;
 
 const Submit = styled(Search)`
