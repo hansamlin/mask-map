@@ -1,11 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback
-} from "react";
+import React, { useContext, useEffect, useRef, useCallback } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import { MaskProvider } from "../../store/realtime/maskProvider";
