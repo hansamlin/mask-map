@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, createRef, useMemo } from "react";
+import React, { useContext, useEffect, useRef, useMemo } from "react";
 import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import { MaskProvider } from "../store/maskProvider";
@@ -25,7 +25,7 @@ const getBounds = (geoJson, _southWest, _northEast) => {
 
 export default () => {
   const { setStore, geoJson } = useContext(MaskProvider);
-  const ref = createRef();
+  const mapRef = useRef();
 
   const setVisibleData = bounds => {
     const { _southWest, _northEast } = bounds;
@@ -40,18 +40,16 @@ export default () => {
   };
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
 
-        window.map.flyTo(new L.LatLng(latitude, longitude));
-      });
-    }
+      mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setVisibleData(ref.current.leafletElement.getBounds());
+    setVisibleData(mapRef.current.leafletElement.getBounds());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,7 +62,7 @@ export default () => {
         minZoom={10}
         center={init}
         onmoveend={handleMoveEnd}
-        ref={ref}
+        ref={mapRef}
       >
         <ZoomControl position="topright" />
         <WMSTileLayer

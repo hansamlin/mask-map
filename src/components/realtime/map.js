@@ -49,15 +49,12 @@ export default () => {
   }, [geoJson]);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
 
-        mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [geoJson]);
+      mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
+    });
+  }, []);
 
   return (
     <Container
