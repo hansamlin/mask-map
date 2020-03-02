@@ -3,7 +3,7 @@ import { Map, ZoomControl, WMSTileLayer } from "react-leaflet";
 import styled from "styled-components";
 import { MaskProvider } from "../../store/realtime/maskProvider";
 import MarkerGroup from "./markerGroup";
-import L from "leaflet";
+import L, { LatLng } from "leaflet";
 
 const init = {
   lat: 25.045655,
@@ -26,6 +26,7 @@ const getBounds = (geoJson, _southWest, _northEast) => {
 export default () => {
   const { setStore, geoJson, isloading } = useContext(MaskProvider);
   const mapRef = useRef();
+  const firstRef = useRef(false);
 
   const setVisibleData = bounds => {
     const { _southWest, _northEast } = bounds;
@@ -35,6 +36,14 @@ export default () => {
       setStore(visibleData);
     }
   };
+
+  useEffect(() => {
+    if (!isloading) {
+      if (!firstRef.current) {
+        firstRef.current = true;
+      }
+    }
+  }, [isloading]);
 
   const handleMoveEnd = useCallback(
     e => {
@@ -53,7 +62,7 @@ export default () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isloading]);
 
-  useNavigator(isloading, mapRef);
+  useNavigator(mapRef, firstRef);
 
   return React.useMemo(
     () => (
@@ -78,17 +87,24 @@ export default () => {
   );
 };
 
-const useNavigator = (isloading, mapRef) => {
+const useNavigator = (mapRef, firstRef) => {
   useEffect(() => {
-    if (!isloading) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
 
-        mapRef.current.leafletElement.flyTo(new L.LatLng(latitude, longitude));
-      });
-    }
+      const popup = L.popup()
+        .setLatLng([parseFloat(latitude) + 0.00015, longitude])
+        .setContent(`我的位置`)
+        .openOn(mapRef.current.leafletElement);
+
+      L.marker(new LatLng(latitude, longitude))
+        .bindPopup(popup)
+        .addTo(mapRef.current.leafletElement);
+
+      mapRef.current.leafletElement.flyTo(new LatLng(latitude, longitude));
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isloading]);
+  }, [firstRef]);
 };
 
 const Container = styled(Map)`
