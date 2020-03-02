@@ -58,16 +58,22 @@ export default () => {
     layer.bindPopup(popup(feature.properties));
   };
 
-  const markGroup = isloading ? null : (
-    <MarkerClusterGroup disableClusteringAtZoom={17}>
-      <GeoJSON
-        key="geoJson"
-        data={geoJson}
-        pointToLayer={createCustomIcon}
-        onEachFeature={onEachFeature}
-      />
-    </MarkerClusterGroup>
+  const geo = isloading ? null : (
+    <GeoJSON
+      key="geoJson"
+      data={geoJson}
+      pointToLayer={createCustomIcon}
+      onEachFeature={onEachFeature}
+    />
   );
 
-  return markGroup;
+  return React.useMemo(
+    () => (
+      <MarkerClusterGroup disableClusteringAtZoom={17}>
+        {geo}
+      </MarkerClusterGroup>
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isloading]
+  );
 };
