@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useStaticQuery, graphql } from "gatsby";
 
-const weekDay = [
+const week = [
   "星期日",
   "星期一",
   "星期二",
@@ -31,7 +31,7 @@ const add = num => {
 };
 
 const getWeekDay = day => {
-  return weekDay[day];
+  return week[day];
 };
 
 const getOddEven = num => {
@@ -76,7 +76,7 @@ export default () => {
         <Importent>{getOddEven(now.singleOrDouble)}</Importent>
         字號者可購買口罩
       </SingleOrDouble>
-      <Ps>※一週限購一次，每次一人限購兩片</Ps>
+      <Ps>※成人口罩七天限購三片，兒童口罩七天限購五片</Ps>
     </Container>
   );
 };
