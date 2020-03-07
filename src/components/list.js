@@ -15,8 +15,14 @@ export default () => {
     if (store.length > 10) setNum(prev => prev + 10);
   };
 
+  const exist = item => {
+    const { name, address } = item.properties;
+
+    return name.indexOf(text) === -1 && address.indexOf(text) === -1;
+  };
+
   store.forEach(item => {
-    if (item.properties.name.indexOf(text) === -1) {
+    if (exist(item)) {
       return;
     }
 
