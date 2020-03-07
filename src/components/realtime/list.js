@@ -26,8 +26,14 @@ export default () => {
     }
   }
 
+  const exist = item => {
+    const { name, address } = item.properties;
+
+    return name.indexOf(text) === -1 && address.indexOf(text) === -1;
+  };
+
   data.forEach(item => {
-    if (item.properties.name.indexOf(text) === -1) {
+    if (exist(item)) {
       return;
     }
 
