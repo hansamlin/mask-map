@@ -49,18 +49,6 @@ module.exports = {
       }
     },
     {
-      resolve: "gatsby-source-graphql",
-      options: {
-        // Arbitrary name for the remote schema Query type
-        typeName: "maskdata",
-        // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
-        fieldName: "maskdata",
-        // Url to query from
-        url: "https://mask-data-farmer.herokuapp.com/graphql",
-        refetchInterval: 60
-      }
-    },
-    {
       resolve: "gatsby-source-custom-api",
       options: {
         url: "https://kiang.github.io/pharmacies/json/points.json",
