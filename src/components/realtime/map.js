@@ -21,7 +21,7 @@ export default () => {
       center={init}
       ref={mapRef}
     >
-      <ZoomControl position="topright" />
+      <ZoomControl position="bottomright" />
       <WMSTileLayer
         attribution={`Map data <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Sam`}
         url="https://wmts.nlsc.gov.tw/wmts/EMAP/default/EPSG:3857/{z}/{y}/{x}"

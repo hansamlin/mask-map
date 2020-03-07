@@ -41,7 +41,8 @@ export default () => {
 
 const Toggle = styled.button`
   position: fixed;
-  right: 11px;
+  right: 10px;
+  top: 10px;
   z-index: 2;
   background: ${props => (props.theme.toggle ? open : close)};
   background-color: ${props => (props.theme.toggle ? "" : "RGB(24, 69, 72)")};
@@ -53,19 +54,17 @@ const Toggle = styled.button`
   @media (min-width: 360px) {
     width: 32px;
     height: 32px;
-    top: 80px;
   }
 
   @media (min-width: 768px) {
     width: 28px;
     height: 28px;
-    top: 70px;
   }
 `;
 
 const Container = styled.div`
   position: fixed;
-
+  top: 10px;
   right: 10px;
   z-index: 1;
   display: ${props => (props.theme.toggle ? "block" : "none")};
@@ -77,12 +76,10 @@ const Container = styled.div`
   overflow: hidden;
 
   @media (min-width: 360px) {
-    top: 80px;
     width: 320px;
   }
 
   @media (min-width: 768px) {
-    top: 70px;
     width: 600px;
   }
 `;
