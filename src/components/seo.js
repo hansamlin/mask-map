@@ -54,7 +54,7 @@ function SEO({ description, lang, meta, title }) {
       ].concat(meta)}
     >
       <link
-        href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+        href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap"
         rel="stylesheet"
       ></link>
     </Helmet>

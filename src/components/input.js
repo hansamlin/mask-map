@@ -1,17 +1,27 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { css, ThemeProvider } from "styled-components";
 
 import Search from "../images/search.svg";
 import { TextProvider } from "../store/textProvider";
+import { close } from "./services";
 
 export default () => {
-  const { setText } = useContext(TextProvider);
+  const { text, setText } = useContext(TextProvider);
   const handleChange = e => setText(e.target.value);
+  const handleReset = () => setText("");
 
   return (
     <Container>
-      <Input type="text" placeholder="搜尋..." onChange={handleChange} />
-      <Submit width="20" height="20" />
+      <Input
+        type="text"
+        placeholder="搜尋店名或地址"
+        onChange={handleChange}
+        value={text}
+      />
+      <ThemeProvider theme={{ show: text.length > 0 }}>
+        <Delete onClick={handleReset} />
+        <Submit width="20" height="20" />
+      </ThemeProvider>
     </Container>
   );
 };
@@ -35,13 +45,28 @@ const Input = styled.input`
   outline: none;
 `;
 
-const Submit = styled(Search)`
+const Position = css`
   position: absolute;
   top: 10px;
   right: 16px;
   cursor: pointer;
+`;
+
+const Submit = styled(Search)`
+  ${Position};
+  display: ${props => (props.theme.show ? "none" : "block")};
 
   & > path {
     stroke: #cccccc;
   }
+`;
+
+const Delete = styled.button`
+  ${Position};
+  display: ${props => (props.theme.show ? "block" : "none")};
+  background: transparent ${close("%23cccccc")};
+  width: 20px;
+  height: 20px;
+  outline: none;
+  border: 0;
 `;
