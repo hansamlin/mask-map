@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useRef } from "react";
+import React, { useMemo, useContext } from "react";
 import styled from "styled-components";
 
 import { FilterProvider } from "../store/filterProvider";
