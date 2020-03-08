@@ -3,50 +3,51 @@ import styled from "styled-components";
 
 import { FilterProvider } from "../store/filterProvider";
 
-export default ({ children, filter, id }) => {
+const item = new Map([
+  ["all", { checked: true, text: "所有口罩" }],
+  ["adult", { checked: false, text: "成人口罩" }],
+  ["child", { checked: false, text: "兒童口罩" }]
+]);
+
+export default () => {
   const { setFilter } = useContext(FilterProvider);
-  const radioRef = useRef();
 
-  const handleFilter = () => {
-    const target = radioRef.current.getAttribute("id");
-    const check = radioRef.current.checked;
-
-    if (check === false) {
-      radioRef.current.checked = true;
-      const tmp = { all: false, adult: false, child: false };
-      tmp[target] = true;
-      setFilter(tmp);
-    }
+  const handleFilter = e => {
+    const target = e.target.previousSibling.getAttribute("id");
+    const tmp = { all: false, adult: false, child: false };
+    tmp[target] = true;
+    setFilter(tmp);
   };
 
-  return useMemo(
-    () => (
-      <label>
+  const button = [];
+  item.forEach((item, key) => {
+    button.push(
+      <label key={key}>
         <Radio
           type="radio"
           name="filter"
-          id={id}
-          defaultChecked={filter}
-          ref={radioRef}
+          id={key}
+          defaultChecked={item.checked}
         />
-        <Button onClick={handleFilter}>{children}</Button>
+        <Button onClick={handleFilter}>{item.text}</Button>
       </label>
-    ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filter]
-  );
+    );
+  });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return useMemo(() => button, []);
 };
 
 const Radio = styled.input`
   display: none;
 
-  &:checked + button {
+  &:checked + span {
     background-color: #d65600;
     color: #fff;
   }
 `;
 
-const Button = styled.button`
+const Button = styled.span`
   width: 84px;
   height: 36px;
   line-height: 36px;
@@ -58,4 +59,5 @@ const Button = styled.button`
   text-align: center;
   cursor: pointer;
   outline: none;
+  display: block;
 `;

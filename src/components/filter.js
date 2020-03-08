@@ -1,23 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import Button from "./button";
-import { FilterProvider } from "../store/filterProvider";
 
 export default () => {
-  const { filter } = useContext(FilterProvider);
-
   return (
     <Container>
-      <Button filter={filter.all} id="all">
+      <Button />
+      {/* <Button id="all" checked={true}>
         所有口罩
       </Button>
-      <Button filter={filter.adult} id="adult">
+      <Button id="adult" checked={false}>
         成人口罩
       </Button>
-      <Button filter={filter.child} id="child">
+      <Button id="child" checked={false}>
         兒童口罩
-      </Button>
+      </Button> */}
     </Container>
   );
 };
