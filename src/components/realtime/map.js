@@ -10,7 +10,6 @@ const init = {
 };
 
 export default () => {
-  const mapRef = useRef();
 
   return (
     <Container
@@ -19,7 +18,6 @@ export default () => {
       maxZoom={18}
       minZoom={10}
       center={init}
-      ref={mapRef}
     >
       <ZoomControl position="bottomright" />
       <WMSTileLayer
