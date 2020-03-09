@@ -20,8 +20,8 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `口罩地圖`,
-        short_name: `口罩地圖`,
-        start_url: `/realtime`,
+        short_name: `mask-map`,
+        start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
