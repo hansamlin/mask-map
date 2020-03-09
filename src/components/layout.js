@@ -1,5 +1,5 @@
-import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -17,17 +17,33 @@ body {
 `;
 
 export default ({ children }) => {
+  const [innerHeight, setInnerHeight] = useState(0);
+
+  useEffect(() => {
+    setInnerHeight(window.innerHeight);
+
+    const resize = () => {
+      setInnerHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", resize);
+
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
   return (
     <>
       <GlobalStyle />
-      <Container>{children}</Container>
+      <ThemeProvider theme={{ height: innerHeight }}>
+        <Container>{children}</Container>
+      </ThemeProvider>
     </>
   );
 };
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: ${props => props.theme.height}px;
 
   @media (min-width: 360px) {
     display: block;
