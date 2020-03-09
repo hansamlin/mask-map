@@ -10,7 +10,7 @@ export default () => {
   const { store } = useContext(MaskProvider);
   const { text } = useContext(TextProvider);
   const { filter } = useContext(FilterProvider);
-  const [num, setNum] = useState(9);
+  const [num, setNum] = useState(10);
   let list = [];
   let data = store;
 
