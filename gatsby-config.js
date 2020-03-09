@@ -19,9 +19,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
-        start_url: `/`,
+        name: `口罩地圖`,
+        short_name: `口罩地圖`,
+        start_url: `/realtime`,
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
