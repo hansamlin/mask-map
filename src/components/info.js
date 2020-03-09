@@ -27,7 +27,6 @@ const getNow = () => {
 };
 
 const add = num => {
-  console.log(num)
   return num >= 10 ? num : `0${num}`;
 };
 
