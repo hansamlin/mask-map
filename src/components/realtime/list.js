@@ -63,7 +63,6 @@ export default () => {
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 136px - 124px);
   background: #ffffff 0% 0% no-repeat padding-box;
   overflow: auto;
 

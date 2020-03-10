@@ -1,11 +1,14 @@
 import React from "react";
-import MaskProvider from "./maskProvider";
+import MaskProvider from "./realtime/maskProvider";
 import FilterProvider from "./filterProvider";
+import TextProvider from "./textProvider";
 
 export default ({ children }) => {
   return (
-    <FilterProvider>
-      <MaskProvider>{children}</MaskProvider>
-    </FilterProvider>
+    <TextProvider>
+      <FilterProvider>
+        <MaskProvider>{children}</MaskProvider>
+      </FilterProvider>
+    </TextProvider>
   );
 };

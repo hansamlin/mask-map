@@ -7,7 +7,9 @@ import Filter from "./filter";
 export default () => {
   return (
     <Container>
-      <Input />
+      <InputBox>
+        <Input />
+      </InputBox>
       <Filter />
     </Container>
   );
@@ -22,9 +24,14 @@ const Container = styled.div`
     content: "";
     position: absolute;
     left: 0;
+    bottom: 0;
     width: 100%;
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: #eaeaea;
   }
+`;
+
+const InputBox = styled.div`
+  position: relative;
 `;

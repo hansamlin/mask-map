@@ -11,7 +11,7 @@ export default () => {
   const handleReset = () => setText("");
 
   return (
-    <Container>
+    <>
       <Input
         type="text"
         placeholder="搜尋店名或地址"
@@ -22,39 +22,56 @@ export default () => {
         <Delete onClick={handleReset} />
         <Submit width="20" height="20" />
       </ThemeProvider>
-    </Container>
+    </>
   );
 };
 
-const Container = styled.div`
-  position: relative;
-`;
-
 const Input = styled.input`
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 0px 6px #00000029;
-  border-radius: 10px;
-  width: 275px;
-  height: 40px;
-  border: 0;
-  display: block;
-  margin: auto;
-  padding: 10px 16px;
-  font-size: 16px;
-  position: relative;
-  outline: none;
+  @media (min-width: 360px) {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 6px #00000029;
+    border-radius: 30px;
+    width: 300px;
+    height: 50px;
+    border: 0;
+    display: block;
+    margin: auto;
+    padding: 10px 26px;
+    font-size: 1.5rem;
+    position: relative;
+    outline: none;
+  }
+
+  @media (min-width: 768px) {
+    height: 40px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    width: 275px;
+    border-radius: 10px;
+  }
 `;
 
 const Position = css`
-  position: absolute;
-  top: 10px;
-  right: 16px;
-  cursor: pointer;
+  @media (min-width: 360px) {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    cursor: pointer;
+  }
 `;
 
 const Submit = styled(Search)`
   ${Position};
-  display: ${props => (props.theme.show ? "none" : "block")};
+  @media (min-width: 360px) {
+    width: 30px;
+    height: 30px;
+    display: ${props => (props.theme.show ? "none" : "block")};
+  }
+
+  @media (min-width: 768px) {
+    width: unset;
+    height: unset;
+  }
 
   & > path {
     stroke: #cccccc;

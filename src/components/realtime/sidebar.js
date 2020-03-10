@@ -6,7 +6,6 @@ import Search from "../search";
 import List from "./list";
 import Button from "../sidebarButton";
 import TextProvider from "../../store/textProvider";
-import FilterProvider from "../../store/filterProvider";
 
 export default () => {
   const [toggle, setToggle] = useState(true);
@@ -16,10 +15,8 @@ export default () => {
       <Container>
         <Info />
         <TextProvider>
-          <FilterProvider>
-            <Search />
-            <List />
-          </FilterProvider>
+          <Search />
+          <List />
         </TextProvider>
         <Button setToggle={setToggle} />
       </Container>
@@ -42,10 +39,12 @@ const Container = styled.div`
       props.theme.toggle ? "translateX(-100%)" : "translateX(0)"};
     position: fixed;
     transition: transform 0.5s;
+    display: none;
   }
 
   @media (min-width: 768px) {
     position: relative;
     transform: translateX(0);
+    display: grid;
   }
 `;
