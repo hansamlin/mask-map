@@ -22,7 +22,7 @@ const useGeoJsonData = () => {
       .then(res => res.json())
       .then(data => setGeoJson(data));
   };
-
+console.log(geoJson)
   useEffect(() => {
     getData();
   }, []);

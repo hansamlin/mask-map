@@ -7,7 +7,7 @@ import MaskProvider from "../store/realtime/maskProvider";
 import Layout from "../components/layout";
 import Rule from "../components/pullMaskRule";
 
-export default () => {
+const Index =  () => {
   return (
     <Layout>
       <Seo title="Mask map" />
@@ -19,3 +19,6 @@ export default () => {
     </Layout>
   );
 };
+
+
+export default Index;
